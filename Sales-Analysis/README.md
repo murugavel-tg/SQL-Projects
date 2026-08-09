@@ -1,72 +1,145 @@
-# 📊 Sales Analysis using SQL
+# Sales Analysis — SQL Server
 
-## 📌 Project Overview
+## Project Overview
 
-This project demonstrates how SQL can be used to analyze sales data and generate business insights.
+This project demonstrates an end-to-end sales analysis using Microsoft SQL Server and T-SQL.
 
-The analysis focuses on sales performance, revenue, customers, products, and regional trends using practical SQL techniques commonly used by Data Analysts.
+The project covers database creation, relational data analysis, customer and product performance, and advanced SQL techniques including Common Table Expressions (CTEs) and window functions.
 
----
+## Business Objectives
 
-## 🎯 Business Objectives
+The analysis answers key business questions such as:
 
-The analysis aims to answer questions such as:
-
-- What are the overall sales and revenue trends?
+- What is the total revenue generated?
+- How many orders were processed?
+- Which months generated the highest revenue?
+- Which regions contribute the most revenue?
 - Which products generate the highest revenue?
-- Which customers contribute the most to sales?
-- Which regions perform best?
-- How does sales performance change over time?
-- Which products or customers require further attention?
+- Which customers contribute the most revenue?
+- How do customers rank by revenue?
+- What are the month-over-month revenue changes?
+- What percentage of revenue does each region contribute?
 
----
+## Tools & Technologies
 
-## 🛠️ SQL Skills Demonstrated
+- Microsoft SQL Server
+- SQL Server Management Studio (SSMS)
+- T-SQL
+- GitHub
 
-- SELECT
-- WHERE
-- ORDER BY
-- GROUP BY
-- HAVING
-- Aggregate Functions
-- CASE Statements
-- INNER JOIN
-- LEFT JOIN
-- Subqueries
+## Database Structure
+
+The project uses a relational sales database containing:
+
+- Customers
+- Orders
+- Order Items
+- Products
+
+Relationship:
+
+Customers → Orders → Order Items → Products
+
+## SQL Analysis
+
+### 1. Basic Sales Analysis
+
+The project calculates:
+
+- Total revenue
+- Total orders
+- Total quantity sold
+- Average order value
+- Monthly revenue
+- Regional revenue
+- Top products
+- Top customers
+
+### 2. Customer & Product Analysis
+
+The analysis includes:
+
+- Customer revenue ranking
+- Repeat-order customers
+- Product units sold
+- Product revenue
+- Category performance
+- Average revenue per customer
+- Customer value segmentation
+- Revenue by customer segment
+
+### 3. Advanced SQL Analysis
+
+Advanced T-SQL techniques include:
+
 - Common Table Expressions (CTEs)
-- Window Functions
-- Date Functions
-- Data Cleaning
-- Business Analysis
+- `RANK()`
+- `ROW_NUMBER()`
+- `LAG()`
+- `PARTITION BY`
+- Running totals
+- Month-over-month revenue analysis
+- Regional revenue contribution
+- Customer order sequencing
 
----
+## Key Business Insights
 
-## 📂 Project Structure
+Based on the SQL Server analysis:
+
+| Metric | Result |
+|---|---:|
+| Total Revenue | $453,200 |
+| Total Orders | 20 |
+| Total Units Sold | 402 |
+| Average Order Value | $22,660 |
+
+### Monthly Performance
+
+March was the strongest month with revenue of **$94,800**, while January generated the lowest monthly revenue at **$59,350**.
+
+### Regional Performance
+
+The **West region** generated the highest revenue at **$150,450**, followed by Central, North, and East.
+
+### Product Performance
+
+The **Control Panel** was the highest-revenue product at **$80,500**, followed by the Industrial Pump and Flow Meter.
+
+### Customer Performance
+
+**Industrial Systems** was the highest-revenue customer, contributing **$60,700**.
+
+## Project Screenshots
+
+### KPI Summary
+
+![SQL KPI Summary](screenshots/SQL_KPI_Summary.png)
+
+### Monthly & Regional Analysis
+
+![Monthly and Regional Analysis](screenshots/SQL_Monthly_Regional_Analysis.png)
+
+### Product & Customer Analysis
+
+![Product and Customer Analysis](screenshots/SQL_Product_Customer_Analysis.png)
+
+## Project Structure
+
 ```text
-Sales-Analysis
+Sales-Analysis/
 │
-├── sql
-│   ├── 01_basic_sales_analysis.sql
-│   ├── 02_customer_analysis.sql
-│   ├── 03_product_analysis.sql
-│   ├── 04_regional_analysis.sql
-│   └── 05_advanced_analysis.sql
+├── sql/
+│   ├── 01_database_setup.sql
+│   ├── 02_basic_sales_analysis.sql
+│   ├── 03_customer_product_analysis.sql
+│   └── 04_advanced_sql_analysis.sql
 │
-├── data
+├── data/
 │
-├── screenshots
+├── screenshots/
+│   ├── SQL_Sales_Analysis_Results.png
+│   ├── SQL_KPI_Summary.png
+│   ├── SQL_Monthly_Regional_Analysis.png
+│   └── SQL_Product_Customer_Analysis.png
 │
 └── README.md
-```
----
-
- ## 👤 Author
-
-**Murugavel Thenpair Gnanasekaran**
-
-Data Analyst | Python | SQL | Power BI | Machine Learning
-
-- LinkedIn: https://www.linkedin.com/in/murugavel-thenpair-gnanasekaran
-- GitHub: https://github.com/murugavel-tg
-
-
