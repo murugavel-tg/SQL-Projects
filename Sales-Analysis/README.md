@@ -60,10 +60,4 @@ Sales-Analysis
 └── README.md
 
 
-### Then:
 
-1. Click **Preview** at the top and check that it looks good.
-2. Click **Commit changes...** in the upper-right corner.
-3. Commit message:
-   ```text
-   Add Sales Analysis project README
