@@ -1,8 +1,12 @@
 -- ============================================================
 -- Sales Analysis Project
+-- SQL Server / T-SQL
 -- File: 03_customer_product_analysis.sql
 -- Purpose: Customer and product performance analysis
 -- ============================================================
+
+USE SalesAnalysis;
+GO
 
 
 -- ============================================================
@@ -100,9 +104,7 @@ ORDER BY category_revenue DESC;
 -- 6. Average Revenue per Customer
 -- ============================================================
 
-SELECT
-    AVG(customer_revenue) AS average_revenue_per_customer
-FROM (
+WITH customer_sales AS (
     SELECT
         c.customer_id,
         SUM(oi.quantity * p.unit_price) AS customer_revenue
@@ -114,7 +116,10 @@ FROM (
     JOIN products p
         ON oi.product_id = p.product_id
     GROUP BY c.customer_id
-) customer_sales;
+)
+SELECT
+    AVG(customer_revenue) AS average_revenue_per_customer
+FROM customer_sales;
 
 
 -- ============================================================
@@ -162,3 +167,4 @@ JOIN products p
     ON oi.product_id = p.product_id
 GROUP BY c.customer_segment
 ORDER BY total_revenue DESC;
+  
