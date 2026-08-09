@@ -59,5 +59,13 @@ Sales-Analysis
 │
 └── README.md
 
+## 👤 Author
+
+**Murugavel Thenpair Gnanasekaran**
+
+Data Analyst | Python | SQL | Power BI | Machine Learning
+
+- LinkedIn: https://www.linkedin.com/in/murugavel-thenpair-gnanasekaran
+- GitHub: https://github.com/murugavel-tg
 
 
