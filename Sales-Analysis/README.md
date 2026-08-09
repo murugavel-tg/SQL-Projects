@@ -42,7 +42,6 @@ The analysis aims to answer questions such as:
 ---
 
 ## 📂 Project Structure
-
 ```text
 Sales-Analysis
 │
@@ -58,8 +57,10 @@ Sales-Analysis
 ├── screenshots
 │
 └── README.md
+```
+---
 
-## 👤 Author
+ ## 👤 Author
 
 **Murugavel Thenpair Gnanasekaran**
 
