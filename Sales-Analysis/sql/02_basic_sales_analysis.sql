@@ -1,8 +1,12 @@
 -- ============================================================
 -- Sales Analysis Project
+-- SQL Server / T-SQL
 -- File: 02_basic_sales_analysis.sql
 -- Purpose: Basic sales performance analysis
 -- ============================================================
+
+USE SalesAnalysis;
+GO
 
 
 -- ============================================================
@@ -39,8 +43,9 @@ FROM order_items;
 -- ============================================================
 
 SELECT
-    SUM(oi.quantity * p.unit_price)
-    / COUNT(DISTINCT oi.order_id) AS average_order_value
+    CAST(
+        SUM(oi.quantity * p.unit_price) AS DECIMAL(12,2)
+    ) / COUNT(DISTINCT oi.order_id) AS average_order_value
 FROM order_items oi
 JOIN products p
     ON oi.product_id = p.product_id;
@@ -51,15 +56,20 @@ JOIN products p
 -- ============================================================
 
 SELECT
-    DATE_TRUNC('month', o.order_date) AS sales_month,
+    YEAR(o.order_date) AS sales_year,
+    MONTH(o.order_date) AS sales_month,
     SUM(oi.quantity * p.unit_price) AS monthly_revenue
 FROM orders o
 JOIN order_items oi
     ON o.order_id = oi.order_id
 JOIN products p
     ON oi.product_id = p.product_id
-GROUP BY DATE_TRUNC('month', o.order_date)
-ORDER BY sales_month;
+GROUP BY
+    YEAR(o.order_date),
+    MONTH(o.order_date)
+ORDER BY
+    sales_year,
+    sales_month;
 
 
 -- ============================================================
@@ -82,7 +92,7 @@ ORDER BY regional_revenue DESC;
 -- 7. Top 5 Products by Revenue
 -- ============================================================
 
-SELECT
+SELECT TOP 5
     p.product_name,
     p.category,
     SUM(oi.quantity * p.unit_price) AS product_revenue
@@ -93,15 +103,14 @@ GROUP BY
     p.product_id,
     p.product_name,
     p.category
-ORDER BY product_revenue DESC
-LIMIT 5;
+ORDER BY product_revenue DESC;
 
 
 -- ============================================================
 -- 8. Top 5 Customers by Revenue
 -- ============================================================
 
-SELECT
+SELECT TOP 5
     c.customer_name,
     c.customer_segment,
     SUM(oi.quantity * p.unit_price) AS customer_revenue
@@ -116,5 +125,8 @@ GROUP BY
     c.customer_id,
     c.customer_name,
     c.customer_segment
-ORDER BY customer_revenue DESC
-LIMIT 5;
+ORDER BY customer_revenue DESC;
+
+
+
+
