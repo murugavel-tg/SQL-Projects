@@ -1,9 +1,12 @@
+
 -- ============================================================
 -- Sales Analysis Project
 -- File: 04_advanced_sql_analysis.sql
 -- Purpose: Advanced SQL analysis using CTEs and window functions
 -- ============================================================
 
+USE SalesAnalysis;
+GO
 
 -- ============================================================
 -- 1. Rank Customers by Revenue
@@ -25,7 +28,6 @@ WITH customer_sales AS (
         c.customer_id,
         c.customer_name
 )
-
 SELECT
     customer_name,
     total_revenue,
@@ -34,7 +36,6 @@ SELECT
     ) AS revenue_rank
 FROM customer_sales
 ORDER BY revenue_rank;
-
 
 -- ============================================================
 -- 2. Rank Products Within Each Category
@@ -54,7 +55,6 @@ WITH product_sales AS (
         p.product_name,
         p.category
 )
-
 SELECT
     product_name,
     category,
@@ -67,7 +67,6 @@ FROM product_sales
 ORDER BY
     category,
     category_rank;
-
 
 -- ============================================================
 -- 3. Top 2 Products in Each Category
@@ -87,7 +86,6 @@ WITH product_sales AS (
         p.product_name,
         p.category
 ),
-
 ranked_products AS (
     SELECT
         product_name,
@@ -99,7 +97,6 @@ ranked_products AS (
         ) AS product_rank
     FROM product_sales
 )
-
 SELECT
     product_name,
     category,
@@ -111,14 +108,17 @@ ORDER BY
     category,
     product_rank;
 
-
 -- ============================================================
 -- 4. Running Monthly Revenue
 -- ============================================================
 
 WITH monthly_sales AS (
     SELECT
-        DATE_TRUNC('month', o.order_date) AS sales_month,
+        DATEFROMPARTS(
+            YEAR(o.order_date),
+            MONTH(o.order_date),
+            1
+        ) AS sales_month,
         SUM(oi.quantity * p.unit_price) AS monthly_revenue
     FROM orders o
     JOIN order_items oi
@@ -126,9 +126,9 @@ WITH monthly_sales AS (
     JOIN products p
         ON oi.product_id = p.product_id
     GROUP BY
-        DATE_TRUNC('month', o.order_date)
+        YEAR(o.order_date),
+        MONTH(o.order_date)
 )
-
 SELECT
     sales_month,
     monthly_revenue,
@@ -138,14 +138,17 @@ SELECT
 FROM monthly_sales
 ORDER BY sales_month;
 
-
 -- ============================================================
 -- 5. Monthly Revenue with Previous Month Revenue
 -- ============================================================
 
 WITH monthly_sales AS (
     SELECT
-        DATE_TRUNC('month', o.order_date) AS sales_month,
+        DATEFROMPARTS(
+            YEAR(o.order_date),
+            MONTH(o.order_date),
+            1
+        ) AS sales_month,
         SUM(oi.quantity * p.unit_price) AS monthly_revenue
     FROM orders o
     JOIN order_items oi
@@ -153,20 +156,17 @@ WITH monthly_sales AS (
     JOIN products p
         ON oi.product_id = p.product_id
     GROUP BY
-        DATE_TRUNC('month', o.order_date)
+        YEAR(o.order_date),
+        MONTH(o.order_date)
 )
-
 SELECT
     sales_month,
     monthly_revenue,
-
     LAG(monthly_revenue) OVER (
         ORDER BY sales_month
     ) AS previous_month_revenue
-
 FROM monthly_sales
 ORDER BY sales_month;
-
 
 -- ============================================================
 -- 6. Month-over-Month Revenue Change
@@ -174,7 +174,11 @@ ORDER BY sales_month;
 
 WITH monthly_sales AS (
     SELECT
-        DATE_TRUNC('month', o.order_date) AS sales_month,
+        DATEFROMPARTS(
+            YEAR(o.order_date),
+            MONTH(o.order_date),
+            1
+        ) AS sales_month,
         SUM(oi.quantity * p.unit_price) AS monthly_revenue
     FROM orders o
     JOIN order_items oi
@@ -182,40 +186,32 @@ WITH monthly_sales AS (
     JOIN products p
         ON oi.product_id = p.product_id
     GROUP BY
-        DATE_TRUNC('month', o.order_date)
+        YEAR(o.order_date),
+        MONTH(o.order_date)
 ),
-
 monthly_comparison AS (
     SELECT
         sales_month,
         monthly_revenue,
-
         LAG(monthly_revenue) OVER (
             ORDER BY sales_month
         ) AS previous_month_revenue
-
     FROM monthly_sales
 )
-
 SELECT
     sales_month,
     monthly_revenue,
     previous_month_revenue,
-
-    monthly_revenue - previous_month_revenue
-        AS revenue_change,
-
-    ROUND(
+    monthly_revenue - previous_month_revenue AS revenue_change,
+    CAST(
         (
             (monthly_revenue - previous_month_revenue)
             / NULLIF(previous_month_revenue, 0)
-        ) * 100,
-        2
+        ) * 100
+        AS DECIMAL(10,2)
     ) AS revenue_change_percentage
-
 FROM monthly_comparison
 ORDER BY sales_month;
-
 
 -- ============================================================
 -- 7. Revenue Contribution by Region
@@ -232,22 +228,18 @@ WITH regional_sales AS (
         ON oi.product_id = p.product_id
     GROUP BY o.region
 )
-
 SELECT
     region,
     regional_revenue,
-
-    ROUND(
+    CAST(
         (
             regional_revenue
-            / SUM(regional_revenue) OVER ()
-        ) * 100,
-        2
+            / NULLIF(SUM(regional_revenue) OVER (), 0)
+        ) * 100
+        AS DECIMAL(10,2)
     ) AS revenue_percentage
-
 FROM regional_sales
 ORDER BY regional_revenue DESC;
-
 
 -- ============================================================
 -- 8. Customer Order Sequence
@@ -269,3 +261,4 @@ JOIN orders o
 ORDER BY
     c.customer_name,
     o.order_date;
+
